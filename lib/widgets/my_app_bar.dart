@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:matsui/app_theme.dart';
-import 'package:matsui/widgets/my_avatar.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override

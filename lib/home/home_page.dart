@@ -13,18 +13,23 @@ class _HomePageState extends State<HomePage> {
   final PageController controller = PageController(initialPage: 0);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(),
-      body: PageView(
-        scrollDirection: Axis.vertical,
-        onPageChanged: (int page) {},
-        physics: BouncingScrollPhysics(),
-        controller: controller,
-        children: <Widget>[
-          ProfilePage(),
-          StatisticsPage(),
-          UploadPage(),
-        ],
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        appBar: MyAppBar(),
+        body: PageView(
+          scrollDirection: Axis.vertical,
+          onPageChanged: (int page) {},
+          physics: BouncingScrollPhysics(),
+          controller: controller,
+          children: <Widget>[
+            ProfilePage(),
+            StatisticsPage(),
+            UploadPage(),
+          ],
+        ),
       ),
     );
   }

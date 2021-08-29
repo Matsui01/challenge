@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   primarySwatch: AppTheme.primarySwatch,
-  accentColor: AppTheme.accentColor,
+  accentColor: AppTheme.primaryColorDark[50],
   scaffoldBackgroundColor: AppTheme.scaffoldBackgroundColor,
   primaryColorDark: AppTheme.primaryColorDark,
   backgroundColor: AppTheme.background,
@@ -11,11 +11,23 @@ final ThemeData lightTheme = ThemeData(
   appBarTheme: AppBarTheme(
     backgroundColor: AppTheme.background,
   ),
-  iconTheme: IconThemeData(color: AppTheme.primaryColorDark, size: iconSize),
+  iconTheme: IconThemeData(color: AppTheme.primaryColorDark[400], size: iconSize),
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
       backgroundColor: MaterialStateProperty.all<Color>(AppTheme.primarySwatch),
       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.zero),
+      shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
+
+      overlayColor: MaterialStateProperty.resolveWith<Color>(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.hovered)) return AppTheme.primaryColorDark.withOpacity(0.04);
+          if (states.contains(MaterialState.focused) || states.contains(MaterialState.pressed)) return AppTheme.primaryColorDark.withOpacity(0.12);
+          return AppTheme.primaryColorDark.withOpacity(0.04);
+        },
+      ),
+      // overlayColor: MaterialStateProperty.all<Color>(AppTheme.primaryColorDark),
+      // shadowColor: MaterialStateProperty.all<Color>(AppTheme.primaryColorDark),
+      // foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
       // padding: MaterialStateProperty.resolveWith<EdgeInsetsGeometry>(
       //   (Set<MaterialState> states) => EdgeInsets.zero,
       // ),
@@ -39,12 +51,16 @@ final ThemeData darkTheme = ThemeData();
 
 final double spacingSize = 20.0;
 
-final double spacingSize1 = 13.0;
+final double smallSpacingSize = 13.0;
+
+final double nanoSpacingSize = 3.0;
 
 final double iconSize = 24.0;
 
+final double smallIconSize = 15.0;
+
 class AppTheme {
-  static const _primarySwatchValue = 0xFFDBAD69; // BEJE
+  static const _primarySwatchValue = 0xFFFFF0BC; // BEJE
 
   static const _backgroundValue = 0xFFFFFFFF; // WHITE
 
@@ -57,16 +73,16 @@ class AppTheme {
   static const MaterialColor primarySwatch = const MaterialColor(
     _primarySwatchValue,
     const <int, Color>{
-      50: const Color(0xFFDBAD69),
-      100: const Color(0xFFDBAD69),
-      200: const Color(0xFFDBAD69),
-      300: const Color(0xFFDBAD69),
-      400: const Color(0xFFDBAD69),
-      500: const Color(_primarySwatchValue),
-      600: const Color(0xFFDBAD69),
-      700: const Color(0xFFDBAD69),
-      800: const Color(0xFFDBAD69),
-      900: const Color(0xFFDBAD69),
+      50: const Color(0xFFfffae5),
+      100: const Color(_primarySwatchValue),
+      200: const Color(0xFFffe88f),
+      300: const Color(0xFFffdf5f),
+      400: const Color(0xFFffd63e),
+      500: const Color(0xFFffcf2c),
+      600: const Color(0xFFffc125),
+      700: const Color(0xFFffae20),
+      800: const Color(0xFFff9d1c),
+      900: const Color(0xFFff7f14),
     },
   );
 

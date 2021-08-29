@@ -72,14 +72,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).backgroundColor),
                     side: MaterialStateProperty.all<BorderSide>(BorderSide.none),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
                   ),
                   child: Container(
                     padding: EdgeInsets.only(
                       right: spacingSize * 1.5,
                       left: spacingSize * 1.5,
-                      bottom: spacingSize1,
-                      top: spacingSize1,
+                      bottom: smallSpacingSize,
+                      top: smallSpacingSize,
                     ),
                     child: Text(
                       "Edit Profile",
@@ -96,7 +95,7 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Container(
             margin: EdgeInsets.only(top: spacingSize),
             color: AppTheme.primaryColorDark[50],
-            child: ListView(
+            child: Column(
               children: [
                 _stats("Deaths", "12"),
                 _stats("Stealing", "6"),
