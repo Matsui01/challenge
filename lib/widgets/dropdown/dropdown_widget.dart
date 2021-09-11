@@ -11,12 +11,16 @@ class DropdownWidget extends StatefulWidget {
   final DropdownController dropdownController;
   final String title;
   final BuildContext ancestorContext;
-  final double? fillWidth;
+  final ButtonStyle buttonStyle;
+  final bool? fillWidth;
+  final TextStyle? textStyle;
   DropdownWidget({
     required this.dropdownController,
     required this.title,
     required this.ancestorContext,
+    required this.buttonStyle,
     this.fillWidth,
+    this.textStyle,
   });
 
   @override
@@ -50,7 +54,7 @@ class _DropdownWidgetState extends State<DropdownWidget> {
   }
 
   void dropAction([DropState? _dropState]) {
-    if(widget.dropdownController.itens.length == 0) return;
+    if (widget.dropdownController.itens.length == 0) return;
     if (_dropState == null) _dropState = this._dropState;
     switch (_dropState) {
       case DropState.SHOWING:
@@ -72,21 +76,18 @@ class _DropdownWidgetState extends State<DropdownWidget> {
     return CompositedTransformTarget(
       link: this._layerLink,
       child: Container(
-        width: widget.fillWidth ?? widget.fillWidth,
+        // width: widget.fillWidth ?? widget.fillWidth,
         margin: EdgeInsets.only(right: spacingSize, left: spacingSize),
         child: TextButton(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).backgroundColor),
-            side: MaterialStateProperty.all<BorderSide>(BorderSide.none),
-            elevation: MaterialStateProperty.all<double>(2),
-          ),
+          style: widget.buttonStyle,
           onPressed: () => dropAction(),
           child: Container(
             padding: EdgeInsets.only(top: spacingSize, bottom: spacingSize, left: spacingSize, right: spacingSize),
+            // width: double.infinity,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(widget.title, style: Theme.of(context).textTheme.button),
+                Text(widget.title, softWrap: true, style: widget.textStyle ?? Theme.of(context).textTheme.button),
                 Icon(Icons.expand_more, size: smallIconSize, color: Theme.of(context).iconTheme.color),
               ],
             ),
@@ -130,7 +131,7 @@ class _DropdownWidgetState extends State<DropdownWidget> {
                         child: Container(
                           width: double.infinity,
                           padding: EdgeInsets.only(top: spacingSize, bottom: spacingSize, left: spacingSize, right: spacingSize),
-                          child: Text(widget.dropdownController.itens[index].value, style: Theme.of(context).textTheme.button),
+                          child: Text(widget.dropdownController.itens[index].value, style: widget.textStyle ?? Theme.of(context).textTheme.button),
                         ),
                       );
                     }),
