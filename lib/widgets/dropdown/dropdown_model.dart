@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class DropdownModel {
   int id;
   String value;

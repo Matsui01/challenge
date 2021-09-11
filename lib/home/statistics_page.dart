@@ -2,9 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:matsui/app_theme.dart';
 import 'package:matsui/widgets/dropdown/dropdown_controller.dart';
+import 'package:matsui/widgets/dropdown/dropdown_model.dart';
 import 'package:matsui/widgets/dropdown/dropdown_widget.dart';
-import 'package:matsui/widgets/dropdown/rounded_dropdown.dart';
-import 'package:matsui/widgets/flat_button.dart';
 
 class StatisticsPage extends StatefulWidget {
   @override
@@ -14,6 +13,15 @@ class StatisticsPage extends StatefulWidget {
 class _StatisticsPageState extends State<StatisticsPage> {
   DropdownController dropdownController = DropdownController(itens: []);
   int counter = 0;
+  @override
+  void initState() {
+    super.initState();
+    dropdownController.initDropDown([
+      DropdownModel(id: 0, value: "Valor 1", model: 1),
+      DropdownModel(id: 2, value: "Valor 2", model: 2),
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,9 +54,10 @@ class _StatisticsPageState extends State<StatisticsPage> {
                   ),
                   Container(
                     margin: EdgeInsets.only(top: spacingSize),
-                    child: RoudedDropdown(
+                    child: DropdownWidget(
                       dropdownController: dropdownController,
                       title: "All",
+                      ancestorContext: context,
                     ),
                   ),
                 ],

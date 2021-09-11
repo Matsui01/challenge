@@ -11,7 +11,7 @@ abstract class _DropdownController with Store {
   _DropdownController({required this.itens});
 
   @observable
-  late DropdownModel value;
+  DropdownModel value = DropdownModel(id: -1, value: "", model: 0);
 
   @action
   void setValue(DropdownModel newValue) => value = newValue;
@@ -21,4 +21,6 @@ abstract class _DropdownController with Store {
     itens.addAll(newItens);
     if (itens.length > 0) setValue(itens[0]);
   }
+
+  void clickItem(int index) => setValue(itens[index]);
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:matsui/home/home_page.dart';
+import 'package:matsui/singleton.dart';
 
 import 'app_theme.dart';
 
@@ -8,9 +9,11 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: Singleton().navigatorKey,
       title: 'Challenge',
       theme: lightTheme,
       debugShowCheckedModeBanner: false,

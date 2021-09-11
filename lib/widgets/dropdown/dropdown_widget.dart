@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:matsui/widgets/dropdown/dropdown_controller.dart';
 
+import '../../app_theme.dart';
+
 enum DropState { CANCELED, SHOWING, CLEAN }
 
 class DropdownWidget extends StatefulWidget {
+  dropAction() => createState().dropAction();
+
   final DropdownController dropdownController;
-  final Widget renderBox;
-  final Widget mainWidget;
+  final String title;
+  final BuildContext ancestorContext;
+  final double? fillWidth;
   DropdownWidget({
     required this.dropdownController,
-    required this.renderBox,
-    required this.mainWidget,
+    required this.title,
+    required this.ancestorContext,
+    this.fillWidth,
   });
 
   @override
@@ -20,11 +26,21 @@ class DropdownWidget extends StatefulWidget {
 class _DropdownWidgetState extends State<DropdownWidget> {
   late OverlayEntry _overlayEntry;
   final LayerLink _layerLink = LayerLink();
+  late var _size;
   DropState _dropState = DropState.CLEAN;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((Duration duration) {
+      final RenderBox renderBox = context.findRenderObject() as RenderBox;
+      _size = renderBox.size;
+    });
+  }
 
   void _createOverlay() {
     _overlayEntry = this._createOverlayEntry();
-    Overlay.of(context)?.insert(_overlayEntry);
+    Overlay.of(widget.ancestorContext)?.insert(_overlayEntry);
     _dropState = DropState.SHOWING;
   }
 
@@ -34,14 +50,16 @@ class _DropdownWidgetState extends State<DropdownWidget> {
   }
 
   void dropAction([DropState? _dropState]) {
-    print("dropaction1");
+    if(widget.dropdownController.itens.length == 0) return;
     if (_dropState == null) _dropState = this._dropState;
     switch (_dropState) {
       case DropState.SHOWING:
+        print("Dropdown Removido");
         _removeOverlay();
         break;
       case DropState.CLEAN:
         _createOverlay();
+        print("Dropdown Adicionado");
         break;
       case DropState.CANCELED:
         print("Ação Cancelada!");
@@ -53,109 +71,74 @@ class _DropdownWidgetState extends State<DropdownWidget> {
   Widget build(BuildContext context) {
     return CompositedTransformTarget(
       link: this._layerLink,
-      child: GestureDetector(
-        onTap: () => dropAction(),
-        child: widget.mainWidget,
+      child: Container(
+        width: widget.fillWidth ?? widget.fillWidth,
+        margin: EdgeInsets.only(right: spacingSize, left: spacingSize),
+        child: TextButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).backgroundColor),
+            side: MaterialStateProperty.all<BorderSide>(BorderSide.none),
+            elevation: MaterialStateProperty.all<double>(2),
+          ),
+          onPressed: () => dropAction(),
+          child: Container(
+            padding: EdgeInsets.only(top: spacingSize, bottom: spacingSize, left: spacingSize, right: spacingSize),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(widget.title, style: Theme.of(context).textTheme.button),
+                Icon(Icons.expand_more, size: smallIconSize, color: Theme.of(context).iconTheme.color),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
 
   OverlayEntry _createOverlayEntry() {
-    RenderBox _renderBox = context.findRenderObject() as RenderBox;
-    var _size = _renderBox.size;
-
-    return OverlayEntry(
-      builder: (context) => Stack(
+    return OverlayEntry(builder: (context) {
+      return Stack(
         children: <Widget>[
           Positioned.fill(
             child: Listener(
               behavior: HitTestBehavior.translucent,
-              onPointerUp: (PointerUpEvent pointerUpEvent) => dropAction(),
-              onPointerMove: (PointerMoveEvent pointerMoveEvent) => _dropState = DropState.CANCELED,
+              onPointerUp: (PointerUpEvent pointerUpEvent) {
+                dropAction();
+                // _dropState = DropState.CANCELED;
+              },
             ),
           ),
           Positioned(
-            height: _size.height,
             width: _size.width,
             child: CompositedTransformFollower(
-              link: this._layerLink,
-              offset: Offset(0.0, _size.height + 5.0),
-              child: widget.renderBox,
-            ),
+                link: this._layerLink,
+                offset: Offset(0.0, _size.height + 5.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).backgroundColor,
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  margin: EdgeInsets.only(left: spacingSize, right: spacingSize),
+                  child: Column(
+                    children: List.generate(widget.dropdownController.itens.length, (index) {
+                      return GestureDetector(
+                        onTap: () {
+                          dropAction();
+                          widget.dropdownController.clickItem(index);
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.only(top: spacingSize, bottom: spacingSize, left: spacingSize, right: spacingSize),
+                          child: Text(widget.dropdownController.itens[index].value, style: Theme.of(context).textTheme.button),
+                        ),
+                      );
+                    }),
+                  ),
+                )),
           ),
         ],
-      ),
-    );
+      );
+    });
   }
-  // final FocusNode _focusNode = FocusNode();
-
-  // late OverlayEntry _overlayEntry;
-
-  // final LayerLink _layerLink = LayerLink();
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   @override
-  //   void initState() {
-  //     _focusNode.addListener(() {
-  //       if (_focusNode.hasFocus) {
-  //         this._overlayEntry = this._createOverlayEntry();
-  //         Overlay.of(context)?.insert(this._overlayEntry);
-  //       } else {
-  //         this._overlayEntry.remove();
-  //       }
-  //     });
-  //   }
-  // }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return CompositedTransformTarget(
-  //     link: this._layerLink,
-  //     child: TextFormField(
-  //       focusNode: this._focusNode,
-  //       decoration: InputDecoration(
-  //         labelText: 'Country',
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // OverlayEntry _createOverlayEntry() {
-  //   RenderBox renderBox = context.findRenderObject() as RenderBox;
-  //   var size = renderBox.size;
-
-  //   return OverlayEntry(
-  //     builder: (context) => Positioned(
-  //       width: size.width,
-  //       child: CompositedTransformFollower(
-  //         link: this._layerLink,
-  //         showWhenUnlinked: false,
-  //         offset: Offset(0.0, size.height + 5.0),
-  //         child: Material(
-  //           elevation: 4.0,
-  //           child: ListView(
-  //             padding: EdgeInsets.zero,
-  //             shrinkWrap: true,
-  //             children: <Widget>[
-  //               ListTile(
-  //                 title: Text('Syria'),
-  //                 onTap: () {
-  //                   print('Syria Tapped');
-  //                 },
-  //               ),
-  //               ListTile(
-  //                 title: Text('Lebanon'),
-  //                 onTap: () {
-  //                   print('Lebanon Tapped');
-  //                 },
-  //               )
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 }
