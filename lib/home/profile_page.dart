@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:matsui/app_theme.dart';
+import 'package:matsui/home/controllers/profile_controller.dart';
+
+import 'controllers/home.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -7,6 +10,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  Home home = Home();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -68,7 +72,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    
+                  },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).backgroundColor),
                     side: MaterialStateProperty.all<BorderSide>(BorderSide.none),
