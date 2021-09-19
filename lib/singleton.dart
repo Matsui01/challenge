@@ -8,5 +8,6 @@ class Singleton {
   factory Singleton() {
     return _singleton;
   }
+  
   final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 }

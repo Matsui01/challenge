@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:matsui/home/profile_page.dart';
-import 'package:matsui/home/statistics_page.dart';
-import 'package:matsui/home/upload_page.dart';
+import 'package:matsui/app/home/profile_page.dart';
+import 'package:matsui/app/home/statistics_page.dart';
+import 'package:matsui/app/home/upload_page.dart';
+
 import 'package:matsui/widgets/my_app_bar.dart';
 
 class HomePage extends StatefulWidget {

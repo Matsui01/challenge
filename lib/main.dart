@@ -1,13 +1,14 @@
 
 import 'package:flutter/material.dart';
-import 'package:matsui/home/home_page.dart';
+import 'package:matsui/app/home/home_page.dart';
 import 'package:matsui/singleton.dart';
+import 'app/home/controllers/home.dart';
 import 'app_theme.dart';
-import 'home/controllers/home.dart';
 
 void main() {
   // Temporario
   Home().init();
+  
   runApp(MyApp());
 }
 

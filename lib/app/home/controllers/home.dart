@@ -1,4 +1,4 @@
-import 'package:matsui/home/controllers/profile_controller.dart';
+import 'package:matsui/app/home/controllers/profile_controller.dart';
 
 class Home {
   Home._internal();
