@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:matsui/models/charts_model.dart';
-import 'package:matsui/retrofit/rest_client.dart';
+import 'package:matsui/api/rest_client.dart';
 import 'package:mobx/mobx.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:logger/logger.dart';

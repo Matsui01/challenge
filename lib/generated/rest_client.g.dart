@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../retrofit/rest_client.dart';
+part of '../api/rest_client.dart';
 
 // **************************************************************************
 // RetrofitGenerator
