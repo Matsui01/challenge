@@ -7,6 +7,8 @@ import 'app_theme.dart';
 
 void main() {
   // Temporario
+  WidgetsFlutterBinding.ensureInitialized();
+  final database = "database";
   Home().init();
   
   runApp(MyApp());
